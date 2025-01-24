@@ -23,10 +23,10 @@ builds:
     main: ./cmd/clef
     ldflags:
       - -s -w
-      - -X github.com/b4nst/clef/cmd/clef/subcmd.version={{.Version}}
-      - -X github.com/b4nst/clef/cmd/clef/subcmd.commit={{.Commit}}
-      - -X github.com/b4nst/clef/cmd/clef/subcmd.date={{.Date}}
-      - -X github.com/b4nst/clef/cmd/clef/subcmd.builtBy=goreleaser
+      - -X github.com/b4nst/clef/cmd/clef/version.Version={{.Version}}
+      - -X github.com/b4nst/clef/cmd/clef/version.Commit={{.Commit}}
+      - -X github.com/b4nst/clef/cmd/clef/version.Date={{.Date}}
+      - -X github.com/b4nst/clef/cmd/clef/version.BuiltBy=goreleaser
 
 archives:
   - formats: [ 'tar.gz' ]

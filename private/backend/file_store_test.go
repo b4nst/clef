@@ -147,7 +147,7 @@ func TestFileStore_Get(t *testing.T) {
 		defer fs.Close()
 
 		v, err := fs.Get(context.TODO(), "nokey")
-		assert.ErrorIs(t, err, ErrNotFound)
+		assert.ErrorIs(t, err, ErrKeyNotFound)
 		assert.Empty(t, v)
 	})
 
@@ -160,7 +160,7 @@ func TestFileStore_Get(t *testing.T) {
 		defer fs.Close()
 
 		v, err := fs.Get(context.TODO(), "nokey")
-		assert.ErrorIs(t, err, ErrNotFound)
+		assert.ErrorIs(t, err, ErrKeyNotFound)
 		assert.Empty(t, v)
 	})
 }

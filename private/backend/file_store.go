@@ -37,7 +37,7 @@ func (fs *FileStore) Get(ctx context.Context, k string) (string, error) {
 	}
 	v, ok := m[k]
 	if !ok {
-		return "", ErrNotFound
+		return "", ErrKeyNotFound
 	}
 	return v, nil
 }
