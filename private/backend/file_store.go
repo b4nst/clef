@@ -3,8 +3,32 @@ package backend
 import (
 	"context"
 	"encoding/binary"
+	"fmt"
 	"os"
+	"path"
+
+	"github.com/adrg/xdg"
 )
+
+func init() {
+	registerBuilder("filestore", func() Builder { return new(FileStoreBuilder) })
+}
+
+type FileStoreBuilder struct {
+	Path string `toml:"path"`
+}
+
+func (fsb *FileStoreBuilder) Build(name string) (Store, error) {
+	if fsb.Path == "" {
+		xdgp, err := xdg.DataFile(path.Join("clef", "stores", name))
+		if err != nil {
+			return nil, fmt.Errorf("could not load file for %s: %w", name, err)
+		}
+		fsb.Path = xdgp
+		fmt.Println("FILE IS IN", fsb.Path)
+	}
+	return NewFileStore(fsb.Path)
+}
 
 // FIleStore uses a file to store and retrieve values.
 // FileStore is **not** recommended in a production environment.
