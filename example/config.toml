@@ -1,0 +1,4 @@
+default_store = "dev"
+
+[stores.dev]
+type = "filestore"

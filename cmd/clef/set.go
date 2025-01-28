@@ -6,7 +6,8 @@ import (
 	"strings"
 
 	"github.com/alecthomas/kong"
-	"github.com/b4nst/clef/private/backend"
+
+	"github.com/b4nst/clef/private/config"
 )
 
 type Set struct {
@@ -15,8 +16,12 @@ type Set struct {
 	Value []string `arg:"" help:"Value to store."`
 }
 
-func (s *Set) Run(ctx context.Context, ktx *kong.Context, cli *CLI) error {
-	store, err := backend.NewFileStore("./store")
+func (s *Set) Run(ctx context.Context, ktx *kong.Context, conf *config.Config) error {
+	if conf == nil {
+		return fmt.Errorf("unexpected nil config")
+	}
+
+	store, err := conf.Backend(s.Store)
 	if err != nil {
 		return fmt.Errorf("could not load store: %w", err)
 	}

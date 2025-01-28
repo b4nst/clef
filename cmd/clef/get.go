@@ -5,7 +5,8 @@ import (
 	"fmt"
 
 	"github.com/alecthomas/kong"
-	"github.com/b4nst/clef/private/backend"
+
+	"github.com/b4nst/clef/private/config"
 )
 
 type Get struct {
@@ -13,8 +14,12 @@ type Get struct {
 	Key   string `arg:"" help:"Key to lookup"`
 }
 
-func (g *Get) Run(ctx context.Context, ktx *kong.Context, cli *CLI) error {
-	store, err := backend.NewFileStore("./store")
+func (g *Get) Run(ctx context.Context, ktx *kong.Context, conf *config.Config) error {
+	if conf == nil {
+		return fmt.Errorf("unexpected nil config")
+	}
+
+	store, err := conf.Backend(g.Store)
 	if err != nil {
 		return fmt.Errorf("could not load store: %w", err)
 	}
