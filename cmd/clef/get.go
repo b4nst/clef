@@ -6,7 +6,7 @@ import (
 
 	"github.com/alecthomas/kong"
 
-	"github.com/b4nst/clef/private/config"
+	"github.com/b4nst/clef/internal/config"
 )
 
 type Get struct {

@@ -2,7 +2,7 @@ package config
 
 import (
 	"github.com/BurntSushi/toml"
-	"github.com/b4nst/clef/private/backend"
+	"github.com/b4nst/clef/internal/backend"
 )
 
 type StoreDefinition struct {

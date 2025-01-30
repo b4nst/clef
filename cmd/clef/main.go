@@ -7,7 +7,7 @@ import (
 	"github.com/adrg/xdg"
 	"github.com/alecthomas/kong"
 
-	"github.com/b4nst/clef/private/config"
+	"github.com/b4nst/clef/internal/config"
 )
 
 type CLI struct {
