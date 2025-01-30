@@ -5,8 +5,12 @@ import (
 	"errors"
 )
 
-// ErrKeyNotFound means the key hasn't been found on the store
-var ErrKeyNotFound = errors.New("key not found")
+var (
+	// ErrKeyNotFound means the key hasn't been found on the store
+	ErrKeyNotFound = errors.New("key not found")
+	// ErrReservedStoreName means the store name cannot be used
+	ErrReservedStoreName = errors.New("reserved store name")
+)
 
 // Store represents a store abstraction.
 type Store interface {

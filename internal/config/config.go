@@ -53,6 +53,11 @@ func ParseFile(path string) (*Config, error) {
 }
 
 func (c *Config) Backend(name string) (backend.Store, error) {
+	// System store is a special OSStore used to store system secrets
+	if name == backend.SystemStoreNameSpace {
+		return backend.SystemStore, nil
+	}
+
 	if name == "" || name == "default" {
 		name = c.DefaultStore
 	}
