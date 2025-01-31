@@ -103,8 +103,6 @@ func TestNewFileStore(t *testing.T) {
 }
 
 func TestFileStore_Get(t *testing.T) {
-	t.Parallel()
-
 	t.Run("found", func(t *testing.T) {
 		content := []byte{
 			0x04, 0x00, // Key length (4 bytes for "key1")
@@ -129,7 +127,6 @@ func TestFileStore_Get(t *testing.T) {
 	})
 
 	t.Run("not found", func(t *testing.T) {
-		t.Parallel()
 		content := []byte{
 			0x04, 0x00, // Key length (4 bytes for "key1")
 			0x6b, 0x65, 0x79, 0x31, // Key ("key1")
@@ -152,7 +149,6 @@ func TestFileStore_Get(t *testing.T) {
 	})
 
 	t.Run("empty file", func(t *testing.T) {
-		t.Parallel()
 		filename := path.Join(t.TempDir(), "testfilestore_get_emptyfile")
 		require.NoFileExists(t, filename)
 		fs, err := NewFileStore(filename)
@@ -166,10 +162,7 @@ func TestFileStore_Get(t *testing.T) {
 }
 
 func TestFileStore_Set(t *testing.T) {
-	t.Parallel()
-
 	t.Run("new file", func(t *testing.T) {
-		t.Parallel()
 		filename := path.Join(t.TempDir(), "testfilestore_set_newfile")
 		require.NoFileExists(t, filename)
 		fs, err := NewFileStore(filename)
@@ -190,7 +183,6 @@ func TestFileStore_Set(t *testing.T) {
 	})
 
 	t.Run("existing file", func(t *testing.T) {
-		t.Parallel()
 		content := []byte{
 			0x04, 0x00, // Key length (4 bytes for "key1")
 			0x6b, 0x65, 0x79, 0x31, // Key ("key1")
