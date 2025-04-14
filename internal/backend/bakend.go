@@ -18,4 +18,6 @@ type Store interface {
 	Get(ctx context.Context, key string) (string, error)
 	// Set store the value in the store at key.
 	Set(ctx context.Context, key, value string) error
+	// Delete delete the secret from the store
+	Delete(ctx context.Context, key string) error
 }

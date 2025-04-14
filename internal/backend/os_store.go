@@ -74,3 +74,8 @@ func (o *OSStore) Get(ctx context.Context, k string) (string, error) {
 func (o *OSStore) Set(ctx context.Context, k, v string) error {
 	return keyring.Set(o.service, k, v)
 }
+
+// Delete implements the Store.Delete method.
+func (o *OSStore) Delete(ctx context.Context, k string) error {
+	return keyring.Delete(o.service, k)
+}
