@@ -11,8 +11,9 @@ import (
 )
 
 type CLI struct {
-	Get     Get     `cmd:"" help:"Lookup a key in a store."`
-	Set     Set     `cmd:"" help:"Store a key value pair."`
+	Get     Get     `cmd:"" help:"Lookup a key in a store." aliases:"fetch"`
+	Set     Set     `cmd:"" help:"Store a key value pair." aliases:"put, store"`
+	Delete  Delete  `cmd:"" help:"Delete a key from a store." aliases:"rm"`
 	Version Version `cmd:"" help:"Print app version."`
 	Config  Config  `cmd:"" help:"Manage clef configuration."`
 

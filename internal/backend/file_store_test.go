@@ -216,3 +216,60 @@ func TestFileStore_Set(t *testing.T) {
 		}
 	})
 }
+
+func TestFileStore_Delete(t *testing.T) {
+	t.Run("delete existing key", func(t *testing.T) {
+		content := []byte{
+			0x04, 0x00, // Key length (4 bytes for "key1")
+			0x6b, 0x65, 0x79, 0x31, // Key ("key1")
+			0x06, 0x00, // Value length (6 bytes for "value1")
+			0x76, 0x61, 0x6c, 0x75, 0x65, 0x31, // Value ("value1")
+			0x04, 0x00, // Key length (4 bytes for "key2")
+			0x6b, 0x65, 0x79, 0x32, // Key ("key2")
+			0x06, 0x00, // Value length (6 bytes for "value2")
+			0x76, 0x61, 0x6c, 0x75, 0x65, 0x32, // Value ("value2")
+		}
+		f, err := os.CreateTemp(t.TempDir(), "")
+		require.NoError(t, err)
+		_, err = f.Write(content)
+		require.NoError(t, err)
+		require.NoError(t, f.Close())
+
+		fs, err := NewFileStore(f.Name())
+		require.NoError(t, err)
+		defer fs.Close()
+
+		if assert.NoError(t, fs.Delete(context.TODO(), "key1")) {
+			fs.fd.Seek(0, 0)
+			remaining, err := io.ReadAll(fs.fd)
+			require.NoError(t, err)
+			assert.Equal(t, []byte{
+				0x04, 0x00, // Key length (4 bytes for "key2")
+				0x6b, 0x65, 0x79, 0x32, // Key ("key2")
+				0x06, 0x00, // Value length (6 bytes for "value2")
+				0x76, 0x61, 0x6c, 0x75, 0x65, 0x32, // Value ("value2")
+			}, remaining)
+		}
+	})
+
+	t.Run("delete non-existent key", func(t *testing.T) {
+		content := []byte{
+			0x04, 0x00,
+			0x6b, 0x65, 0x79, 0x31,
+			0x06, 0x00,
+			0x76, 0x61, 0x6c, 0x75, 0x65, 0x31,
+		}
+		f, err := os.CreateTemp(t.TempDir(), "")
+		require.NoError(t, err)
+		_, err = f.Write(content)
+		require.NoError(t, err)
+		require.NoError(t, f.Close())
+
+		fs, err := NewFileStore(f.Name())
+		require.NoError(t, err)
+		defer fs.Close()
+
+		err = fs.Delete(context.TODO(), "keyX")
+		assert.NoError(t, err)
+	})
+}

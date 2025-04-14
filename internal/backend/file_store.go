@@ -76,8 +76,25 @@ func (fs *FileStore) Set(ctx context.Context, k, v string) error {
 	return writeBinaryMap(fs.fd, m)
 }
 
+// Delete implements the Store.Delete method
+func (fs *FileStore) Delete(ctx context.Context, k string) error {
+	m, err := readBinaryMap(fs.fd)
+	if err != nil {
+		return err
+	}
+	delete(m, k)
+	return writeBinaryMap(fs.fd, m)
+}
+
 func writeBinaryMap(file *os.File, data map[string]string) error {
-	file.Seek(0, 0)
+	// Truncate the file before writing
+	if err := file.Truncate(0); err != nil {
+		return err
+	}
+
+	if _, err := file.Seek(0, 0); err != nil {
+		return err
+	}
 	for key, value := range data {
 		keyLen := uint16(len(key))
 		valueLen := uint16(len(value))

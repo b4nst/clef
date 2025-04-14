@@ -6,6 +6,7 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 	"github.com/zalando/go-keyring"
 )
 
@@ -104,5 +105,33 @@ func TestOSStore_Set(t *testing.T) {
 				assert.Equal(t, "test_value", v)
 			}
 		}
+	})
+}
+
+func TestOSStore_Delete(t *testing.T) {
+	t.Run("error", func(t *testing.T) {
+		kerr := errors.New("test delete error")
+		keyring.MockInitWithError(kerr)
+
+		s := newOSStore("test_foo")
+		assert.ErrorIs(t, s.Delete(context.TODO(), "test_key"), kerr)
+	})
+
+	t.Run("nominal", func(t *testing.T) {
+		keyring.MockInit()
+
+		s := newOSStore("test_foo")
+
+		// First set a value so we can delete it
+		err := s.Set(context.TODO(), "test_key", "test_value")
+		require.NoError(t, err)
+
+		// Now delete it
+		err = s.Delete(context.TODO(), "test_key")
+		assert.NoError(t, err)
+
+		// Try to get it to confirm it's gone
+		_, err = keyring.Get(s.service, "test_key")
+		assert.Error(t, err)
 	})
 }
