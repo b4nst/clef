@@ -5,7 +5,7 @@ go 1.23.4
 require (
 	github.com/BurntSushi/toml v1.5.0
 	github.com/adrg/xdg v0.5.3
-	github.com/alecthomas/kong v1.6.1
+	github.com/alecthomas/kong v1.10.0
 	github.com/stretchr/testify v1.10.0
 	github.com/zalando/go-keyring v0.2.6
 )
