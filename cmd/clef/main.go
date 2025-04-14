@@ -14,29 +14,29 @@ type CLI struct {
 	Get     Get     `cmd:"" help:"Lookup a key in a store."`
 	Set     Set     `cmd:"" help:"Store a key value pair."`
 	Version Version `cmd:"" help:"Print app version."`
+	Config  Config  `cmd:"" help:"Manage clef configuration."`
 
-	ConfigFile string `help:"Config file" short:"c"`
+	ConfigFile string `help:"Config file" short:"c" default:"${config_file}"`
+}
+
+func ConfigProvider(cli *CLI) (*config.Config, error) {
+	conf, err := config.ParseFile(cli.ConfigFile)
+	if err != nil {
+		return nil, fmt.Errorf("load config: %w", err)
+	}
+	return conf, nil
 }
 
 func main() {
+	xpath, _ := xdg.ConfigFile("clef/config.toml")
 	var cli CLI
-	cmd := kong.Parse(&cli, kong.Name("clef"), kong.Description("Personal secret manager"))
-
-	cmd.BindTo(context.Background(), (*context.Context)(nil))
-
-	// ignore config errors for version command
-	if cmd.Command() != "version" {
-		// TODO: use kong resolvers for that.
-		cpath := cli.ConfigFile
-		if cpath == "" {
-			var err error
-			cpath, err = xdg.ConfigFile("clef/config.toml")
-			cmd.FatalIfErrorf(err, "error getting default config file")
-		}
-		c, err := config.ParseFile(cpath)
-		cmd.FatalIfErrorf(err, fmt.Sprintf("error reading config at %s", cpath))
-		cmd.Bind(c)
-	}
+	cmd := kong.Parse(&cli,
+		kong.Name("clef"),
+		kong.Description("Personal secret manager"),
+		kong.Vars{"config_file": xpath},
+		kong.BindToProvider(ConfigProvider),
+		kong.BindTo(context.Background(), (*context.Context)(nil)),
+	)
 
 	cmd.FatalIfErrorf(cmd.Run())
 }

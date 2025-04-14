@@ -1,4 +1,12 @@
-default_store = "dev"
+# Store used if not specified in the command.
+default_store = "file"
 
-[stores.dev]
+[stores.file]
 type = "filestore"
+# [stores.file.config]
+# path = "~/.config/clef/filestore"
+
+[stores.os]
+type = "osstore"
+[stores.os.config]
+namespace = "prod"
