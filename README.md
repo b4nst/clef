@@ -60,6 +60,7 @@ Example:
 ```toml
 # Default store if not specified
 default_store = "file"
+default_profile = "robot"
 
 [stores.file]
 type = "filestore"
@@ -68,6 +69,14 @@ type = "filestore"
 type = "osstore"
 [stores.os.config]
 namespace = "prod"
+
+
+[profiles.robot]
+shell = "nu"
+[[profiles.robot.secrets]]
+key = "fsociety-root"
+store = "os"
+target = "SUPER_SECRET"
 ```
 
 ## Supported Stores
@@ -78,6 +87,15 @@ clef currently supports two built-in secret stores:
 - `osstore` – Uses the system's native keyring (macOS, Linux via Secret Service)
 
 Other stores may be added in the future, as long as they meet the bar for safety and maintainability.
+
+## Use Cases
+
+### Shell
+
+Clef shell enables you to create a shell environment with required secrets available as environment variables.
+You can build a profile in your configuration, specifying the required secrets and their destination environment variable names (targets).
+Then, running clef shell -p <profile> will place you in a shell with all secrets available as requested.
+Do your business within this shell, then exit when finished. Once you exit, your secrets are no longer available in your environment.
 
 ## Contributing
 
@@ -112,5 +130,5 @@ Apache – use it, modify it, share it.
 
 ---
 
-Made with ❤️ to avoid exporting secrets in `.Xrc`
+Made with ❤️ to avoid exporting secrets in yet another `.Xrc`
 
