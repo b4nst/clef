@@ -199,17 +199,13 @@ func TestFileStore_Set(t *testing.T) {
 		require.NoError(t, err)
 		defer fs.Close()
 
-		if assert.NoError(t, fs.Set(context.TODO(), "key2", "value2")) {
+		if assert.NoError(t, fs.Set(context.TODO(), "key1", "value2")) {
 			fs.fd.Seek(0, 0)
 			content, err := io.ReadAll(fs.fd)
 			require.NoError(t, err)
 			assert.Equal(t, []byte{
 				0x04, 0x00, // Key length (4 bytes for "key1")
 				0x6b, 0x65, 0x79, 0x31, // Key ("key1")
-				0x06, 0x00, // Value length (6 bytes for "value1")
-				0x76, 0x61, 0x6c, 0x75, 0x65, 0x31, // Value ("value1")
-				0x04, 0x00, // Key length (4 bytes for "key2")
-				0x6b, 0x65, 0x79, 0x32, // Key ("key2")
 				0x06, 0x00, // Value length (6 bytes for "value2")
 				0x76, 0x61, 0x6c, 0x75, 0x65, 0x32, // Value ("value2")
 			}, content)

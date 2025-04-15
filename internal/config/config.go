@@ -8,11 +8,14 @@ import (
 	"github.com/BurntSushi/toml"
 
 	"github.com/b4nst/clef/internal/backend"
+	"github.com/b4nst/clef/internal/profile"
 )
 
 type Config struct {
-	DefaultStore string                      `toml:"default_store"`
-	Stores       map[string]*StoreDefinition `toml:"stores"`
+	DefaultStore   string                      `toml:"default_store"`
+	Stores         map[string]*StoreDefinition `toml:"stores"`
+	DefaultProfile string                      `toml:"default_profile"`
+	Profiles       map[string]*profile.Profile `toml:"profiles"`
 }
 
 func parse(decoder *toml.Decoder) (*Config, error) {
@@ -68,4 +71,17 @@ func (c *Config) Backend(name string) (backend.Store, error) {
 	}
 
 	return def.builder.Build(name)
+}
+
+func (c *Config) Profile(name string) (*profile.Profile, error) {
+	if name == "" || name == "default" {
+		name = c.DefaultProfile
+	}
+
+	p, ok := c.Profiles[name]
+	if !ok {
+		return nil, fmt.Errorf("%s profile not found in configuration", name)
+	}
+
+	return p, nil
 }

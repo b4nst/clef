@@ -1,0 +1,11 @@
+all: false
+dir: "internal/mocks/{{.PackagePath}}"
+packages:
+  github.com/b4nst/clef:
+    config:
+      recursive: true
+      all: true
+      dir: "{{.InterfaceDir}}"
+      filename: "mock_{{.InterfaceName}}.go"
+      exclude-subpkg-regex:
+        - "^internal/mocks/.*"

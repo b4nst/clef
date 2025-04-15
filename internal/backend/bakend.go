@@ -21,3 +21,7 @@ type Store interface {
 	// Delete delete the secret from the store
 	Delete(ctx context.Context, key string) error
 }
+
+type StoreLoader interface {
+	Backend(string) (Store, error)
+}
