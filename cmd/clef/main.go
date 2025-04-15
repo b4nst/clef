@@ -16,6 +16,7 @@ type CLI struct {
 	Delete  Delete  `cmd:"" help:"Delete a key from a store." aliases:"rm"`
 	Version Version `cmd:"" help:"Print app version."`
 	Config  Config  `cmd:"" help:"Manage clef configuration."`
+	Shell   Shell   `cmd:"" help:"Load a shell with secrets injected as env variable."`
 
 	ConfigFile string `help:"Config file" short:"c" default:"${config_file}"`
 }

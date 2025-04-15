@@ -1,5 +1,6 @@
 # Store used if not specified in the command.
 default_store = "file"
+default_profile = "default"
 
 [stores.file]
 type = "filestore"
@@ -10,3 +11,10 @@ type = "filestore"
 type = "osstore"
 [stores.os.config]
 namespace = "prod"
+
+[profiles.default]
+shell = "nu"
+# [[profiles.default.secrets]]
+# key = "foo"
+# store = "os"
+# target = "MY_FOO"
