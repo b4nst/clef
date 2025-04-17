@@ -5,24 +5,29 @@ import (
 	"fmt"
 
 	"github.com/b4nst/clef/internal/config"
+	"github.com/b4nst/clef/internal/profile"
 )
 
 type Shell struct {
-	Profile string `help:"Profile to load." short:"p" default:"default"`
-	Shell   string `help:"Shell to use" short:"s" env:"SHELL"`
+	Profile string           `help:"Profile to load." short:"p" optional:""`
+	Secret  []profile.Secret `help:"Additional secrets to load into the env. Format [store.]secret[=env]. If store is empty, default store will be used. If env is empty, secret name will be used as env name." short:"s" optional:""`
+	Shell   string           `help:"Shell to use" env:"SHELL"`
 }
 
 func (s *Shell) Run(ctx context.Context, conf *config.Config) error {
-	const defaultShell = "sh"
-
 	if conf == nil {
 		return fmt.Errorf("unexpected nil config")
 	}
 
-	profile, err := conf.Profile(s.Profile)
-	if err != nil {
-		return fmt.Errorf("get profile: %w", err)
+	prof := &profile.Profile{}
+	// Load a profile only if explicitly requested, or no secret requested
+	if s.Profile != "" || len(s.Secret) <= 0 {
+		var err error
+		prof, err = conf.Profile(s.Profile)
+		if err != nil {
+			return fmt.Errorf("get profile: %w", err)
+		}
 	}
 
-	return profile.Activate(ctx, s.Shell, conf)
+	return prof.Activate(ctx, s.Shell, conf, s.Secret...)
 }
