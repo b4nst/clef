@@ -17,6 +17,7 @@ type CLI struct {
 	Version Version `cmd:"" help:"Print app version."`
 	Config  Config  `cmd:"" help:"Manage clef configuration."`
 	Shell   Shell   `cmd:"" help:"Load a shell with secrets injected as env variable."`
+	Exec    Exec    `cmd:"" help:"Execute a command with secrets injected as env variable."`
 
 	ConfigFile string `help:"Config file" short:"c" default:"${config_file}"`
 }
