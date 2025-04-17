@@ -90,12 +90,93 @@ Other stores may be added in the future, as long as they meet the bar for safety
 
 ## Use Cases
 
+### Exec
+
+Clef exec enables you to run a specific command with required secrets available as environment variables.
+You can either specify secrets directly using the `-s` or `--secret` flags, use a predefined profile with `-p` or `--profile`, or combine both approaches.
+
+The command syntax follows this pattern:
+```
+clef exec [flags] -- <command_to_execute>
+
+Flags:
+  -h, --help                 Show context-sensitive help.
+  -c, --config-file="/Users/banst/Library/Application Support/clef/config.toml"
+                             Config file
+
+  -p, --profile=STRING       Profile to load.
+  -s, --secret=SECRET,...    Secrets to load into the env. Format [store.]secret[=env]. If store is empty, default store will be
+                             used. If env is empty, secret name will be used as env name.
+```
+
+With the `--secret` flag, you can specify secrets in the format `[store.]secret[=ENV_VAR_NAME]`:
+- If `store` is omitted, the default store will be used
+- If `ENV_VAR_NAME` is omitted, the secret name will be used as the environment variable name
+
+Examples:
+
+```bash
+# Run 'env' with secrets 'foo' as 'FOO', 'store.bar' as 'BAR', and 'baz' as 'baz'
+clef exec -s foo=FOO --secret store.bar=BAR --secret baz -- env
+
+# Run 'env' with all secrets defined in the 'stealth' profile
+clef exec --profile stealth -- env
+
+# Run 'env' with secrets from the 'stealth' profile plus an additional secret
+clef exec -p stealth -s foo=ADDITIONAL_FOO -- env
+```
+
+Unlike `clef shell`, which creates an interactive shell environment, `clef exec` executes a single command and terminates afterward.
+This is useful for running scripts or commands that need access to secrets without maintaining an interactive session.
+
 ### Shell
 
 Clef shell enables you to create a shell environment with required secrets available as environment variables.
-You can build a profile in your configuration, specifying the required secrets and their destination environment variable names (targets).
-Then, running clef shell -p <profile> will place you in a shell with all secrets available as requested.
-Do your business within this shell, then exit when finished. Once you exit, your secrets are no longer available in your environment.
+You can load a profile from your configuration, providing access to all secrets defined in that profile, or provide specific secrets.
+Or both!
+
+The command syntax follows this pattern:
+```
+clef shell [flags]
+
+Flags:
+  -h, --help                 Show context-sensitive help.
+  -c, --config-file="/Users/banst/Library/Application Support/clef/config.toml"
+                             Config file
+
+  -p, --profile=STRING       Profile to load.
+  -s, --secret=SECRET,...    Additional secrets to load into the env. Format [store.]secret[=env]. If store is empty, default store
+                             will be used. If env is empty, secret name will be used as env name.
+      --shell=STRING         Shell to use ($SHELL)
+```
+
+When you run `clef shell`, it launches a new shell session with the specified secrets injected as environment variables.
+By default, it uses your system's default shell (`$SHELL`), but you can specify a different shell using the `--shell` flag.
+With the `-s` or `--secret` flag, you can specify additional secrets in the format `[store.]secret[=ENV_VAR_NAME]`:
+- If `store` is omitted, the default store will be used
+- If `ENV_VAR_NAME` is omitted, the secret name will be used as the environment variable name
+
+Examples:
+
+```bash
+# Launch a shell with secrets from the default profile
+clef shell
+
+# Launch a shell with secrets from the 'development' profile
+clef shell -p development
+
+# Launch a specific shell (bash) with secrets from the 'production' profile
+clef shell -p production -s bash
+```
+
+> [!NOTE]
+> While in the shell session, all specified secrets remain available as environment variables.
+> Once you exit the shell (using `exit` or Ctrl+D), these secrets are removed from your environment.
+
+> [!IMPORTANT]
+> Shell mode is recommended only when you need an extended interactive session with access to secrets.
+> For running specific commands, `clef exec` is the preferred approach since it automatically cleans up after execution.
+> Use shell mode only when absolutely necessary, as you must remember to exit the shell to ensure secrets are removed from your environment.
 
 ## Contributing
 
