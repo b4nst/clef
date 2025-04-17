@@ -70,3 +70,29 @@ func TestSecret_Inject(t *testing.T) {
 		assert.ErrorIs(t, secret.Inject(context.TODO(), injector, loader), therr)
 	})
 }
+
+func TestSecret_UnmarshalText(t *testing.T) {
+	tcs := map[string]struct {
+		in  string
+		out Secret
+		err error
+	}{
+		"nostore":  {"key=target", Secret{"key", "", "target"}, nil},
+		"notarget": {"store.key", Secret{"key", "store", ""}, nil},
+		"keyonly":  {"key", Secret{"key", "", ""}, nil},
+		"all":      {"store.key=target", Secret{"key", "store", "target"}, nil},
+		"empty":    {"", Secret{}, ErrEmptyKey},
+	}
+
+	for name, tc := range tcs {
+		t.Run(name, func(t *testing.T) {
+			t.Parallel()
+
+			s := &Secret{}
+			err := s.DecodeText(tc.in)
+
+			assert.ErrorIs(t, err, tc.err)
+			assert.Equal(t, &tc.out, s)
+		})
+	}
+}
