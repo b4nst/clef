@@ -16,7 +16,7 @@ type OSStoreBuilder struct {
 }
 
 // Build returns a new OSStore store.
-func (ob *OSStoreBuilder) Build(name string) (Store, error) {
+func (ob *OSStoreBuilder) Build(_ context.Context, name string) (Store, error) {
 	if ob.Namespace == "" {
 		ob.Namespace = name
 	}

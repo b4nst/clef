@@ -21,7 +21,7 @@ func (s *Set) Run(ctx context.Context, ktx *kong.Context, conf *config.Config) e
 		return fmt.Errorf("unexpected nil config")
 	}
 
-	store, err := conf.Backend(s.Store)
+	store, err := conf.Backend(ctx, s.Store)
 	if err != nil {
 		return fmt.Errorf("could not load store: %w", err)
 	}

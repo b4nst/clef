@@ -17,7 +17,7 @@ func TestOSStoreBuilderBuild(t *testing.T) {
 		t.Parallel()
 
 		builder := &OSStoreBuilder{}
-		s, err := builder.Build("default")
+		s, err := builder.Build(context.TODO(), "default")
 		if assert.NoError(t, err) {
 			assert.Equal(t, "default", builder.Namespace)
 			assert.Implements(t, (*Store)(nil), s)
@@ -28,7 +28,7 @@ func TestOSStoreBuilderBuild(t *testing.T) {
 		t.Parallel()
 
 		builder := &OSStoreBuilder{Namespace: SystemStoreNameSpace}
-		s, err := builder.Build("default")
+		s, err := builder.Build(context.TODO(), "default")
 		if assert.ErrorIs(t, err, ErrReservedStoreName) {
 			assert.Nil(t, s)
 		}
@@ -38,7 +38,7 @@ func TestOSStoreBuilderBuild(t *testing.T) {
 		t.Parallel()
 
 		builder := &OSStoreBuilder{Namespace: "foo"}
-		s, err := builder.Build("bar")
+		s, err := builder.Build(context.TODO(), "bar")
 		if assert.NoError(t, err) {
 			assert.Equal(t, "foo", builder.Namespace)
 			assert.Implements(t, (*Store)(nil), s)

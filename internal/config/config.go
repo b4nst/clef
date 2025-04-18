@@ -1,6 +1,7 @@
 package config
 
 import (
+	"context"
 	"fmt"
 	"os"
 	"strings"
@@ -55,7 +56,7 @@ func ParseFile(path string) (*Config, error) {
 	return parse(toml.NewDecoder(fp))
 }
 
-func (c *Config) Backend(name string) (backend.Store, error) {
+func (c *Config) Backend(ctx context.Context, name string) (backend.Store, error) {
 	// System store is a special OSStore used to store system secrets
 	if name == backend.SystemStoreNameSpace {
 		return backend.SystemStore, nil
@@ -70,7 +71,7 @@ func (c *Config) Backend(name string) (backend.Store, error) {
 		return nil, fmt.Errorf("%s store not found in configuration", name)
 	}
 
-	return def.builder.Build(name)
+	return def.builder.Build(ctx, name)
 }
 
 func (c *Config) Profile(name string) (*profile.Profile, error) {

@@ -1,13 +1,16 @@
 package backend
 
-import "fmt"
+import (
+	"context"
+	"fmt"
+)
 
 var builderRegistry = make(map[string]BuilderFunc)
 
 type BuilderFunc func() Builder
 
 type Builder interface {
-	Build(name string) (Store, error)
+	Build(ctx context.Context, name string) (Store, error)
 }
 
 func registerBuilder(name string, builderf func() Builder) {

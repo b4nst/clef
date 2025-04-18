@@ -24,7 +24,7 @@ func TestSecret_Inject(t *testing.T) {
 		store := backend.NewMockStore(t)
 		store.EXPECT().Get(mock.Anything, "foo").Return("bar", nil).Once()
 		loader := backend.NewMockStoreLoader(t)
-		loader.EXPECT().Backend("default").Return(store, nil).Once()
+		loader.EXPECT().Backend(context.TODO(), "default").Return(store, nil).Once()
 
 		secret := Secret{
 			Key:   "foo",
@@ -38,7 +38,7 @@ func TestSecret_Inject(t *testing.T) {
 	t.Run("load store failure", func(t *testing.T) {
 		therr := errors.New("oops")
 		loader := backend.NewMockStoreLoader(t)
-		loader.EXPECT().Backend("default").Return(nil, therr)
+		loader.EXPECT().Backend(context.TODO(), "default").Return(nil, therr)
 
 		secret := Secret{Key: "foo", Store: "default", Target: "bar"}
 		assert.ErrorIs(t, secret.Inject(context.TODO(), nil, loader), therr)
@@ -49,7 +49,7 @@ func TestSecret_Inject(t *testing.T) {
 		store := backend.NewMockStore(t)
 		store.EXPECT().Get(mock.Anything, "foo").Return("", therr).Once()
 		loader := backend.NewMockStoreLoader(t)
-		loader.EXPECT().Backend(mock.AnythingOfType("string")).Return(store, nil)
+		loader.EXPECT().Backend(context.TODO(), mock.AnythingOfType("string")).Return(store, nil)
 
 		secret := Secret{Key: "foo", Store: "default", Target: "bar"}
 		assert.ErrorIs(t, secret.Inject(context.TODO(), nil, loader), therr)
@@ -64,7 +64,7 @@ func TestSecret_Inject(t *testing.T) {
 		store := backend.NewMockStore(t)
 		store.EXPECT().Get(mock.Anything, "foo").Return("bar", nil).Once()
 		loader := backend.NewMockStoreLoader(t)
-		loader.EXPECT().Backend("default").Return(store, nil).Once()
+		loader.EXPECT().Backend(context.TODO(), "default").Return(store, nil).Once()
 
 		secret := Secret{Key: "foo", Store: "default", Target: "bar"}
 		assert.ErrorIs(t, secret.Inject(context.TODO(), injector, loader), therr)

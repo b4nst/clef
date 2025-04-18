@@ -5,6 +5,8 @@
 package backend
 
 import (
+	"context"
+
 	mock "github.com/stretchr/testify/mock"
 )
 
@@ -36,8 +38,8 @@ func (_m *MockBuilder) EXPECT() *MockBuilder_Expecter {
 }
 
 // Build provides a mock function for the type MockBuilder
-func (_mock *MockBuilder) Build(name string) (Store, error) {
-	ret := _mock.Called(name)
+func (_mock *MockBuilder) Build(ctx context.Context, name string) (Store, error) {
+	ret := _mock.Called(ctx, name)
 
 	if len(ret) == 0 {
 		panic("no return value specified for Build")
@@ -45,18 +47,18 @@ func (_mock *MockBuilder) Build(name string) (Store, error) {
 
 	var r0 Store
 	var r1 error
-	if returnFunc, ok := ret.Get(0).(func(string) (Store, error)); ok {
-		return returnFunc(name)
+	if returnFunc, ok := ret.Get(0).(func(context.Context, string) (Store, error)); ok {
+		return returnFunc(ctx, name)
 	}
-	if returnFunc, ok := ret.Get(0).(func(string) Store); ok {
-		r0 = returnFunc(name)
+	if returnFunc, ok := ret.Get(0).(func(context.Context, string) Store); ok {
+		r0 = returnFunc(ctx, name)
 	} else {
 		if ret.Get(0) != nil {
 			r0 = ret.Get(0).(Store)
 		}
 	}
-	if returnFunc, ok := ret.Get(1).(func(string) error); ok {
-		r1 = returnFunc(name)
+	if returnFunc, ok := ret.Get(1).(func(context.Context, string) error); ok {
+		r1 = returnFunc(ctx, name)
 	} else {
 		r1 = ret.Error(1)
 	}
@@ -69,14 +71,15 @@ type MockBuilder_Build_Call struct {
 }
 
 // Build is a helper method to define mock.On call
+//   - ctx
 //   - name
-func (_e *MockBuilder_Expecter) Build(name interface{}) *MockBuilder_Build_Call {
-	return &MockBuilder_Build_Call{Call: _e.mock.On("Build", name)}
+func (_e *MockBuilder_Expecter) Build(ctx interface{}, name interface{}) *MockBuilder_Build_Call {
+	return &MockBuilder_Build_Call{Call: _e.mock.On("Build", ctx, name)}
 }
 
-func (_c *MockBuilder_Build_Call) Run(run func(name string)) *MockBuilder_Build_Call {
+func (_c *MockBuilder_Build_Call) Run(run func(ctx context.Context, name string)) *MockBuilder_Build_Call {
 	_c.Call.Run(func(args mock.Arguments) {
-		run(args[0].(string))
+		run(args[0].(context.Context), args[1].(string))
 	})
 	return _c
 }
@@ -86,7 +89,7 @@ func (_c *MockBuilder_Build_Call) Return(store Store, err error) *MockBuilder_Bu
 	return _c
 }
 
-func (_c *MockBuilder_Build_Call) RunAndReturn(run func(name string) (Store, error)) *MockBuilder_Build_Call {
+func (_c *MockBuilder_Build_Call) RunAndReturn(run func(ctx context.Context, name string) (Store, error)) *MockBuilder_Build_Call {
 	_c.Call.Return(run)
 	return _c
 }
