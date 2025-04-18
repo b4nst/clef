@@ -23,5 +23,5 @@ type Store interface {
 }
 
 type StoreLoader interface {
-	Backend(string) (Store, error)
+	Backend(context.Context, string) (Store, error)
 }

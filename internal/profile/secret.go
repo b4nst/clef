@@ -82,7 +82,7 @@ func (s *Secret) DecodeText(text string) error {
 // Inject loads a secret from the specified store and injects it using the provided function.
 // It will use the Key to fetch the secret and inject it with the Target name (or Key if Target is empty).
 func (s *Secret) Inject(ctx context.Context, injectf Injector, loader backend.StoreLoader) error {
-	store, err := loader.Backend(s.Store)
+	store, err := loader.Backend(ctx, s.Store)
 	if err != nil {
 		return fmt.Errorf("load store '%s': %w", s.Store, err)
 	}

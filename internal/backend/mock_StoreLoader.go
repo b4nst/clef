@@ -5,6 +5,8 @@
 package backend
 
 import (
+	"context"
+
 	mock "github.com/stretchr/testify/mock"
 )
 
@@ -36,8 +38,8 @@ func (_m *MockStoreLoader) EXPECT() *MockStoreLoader_Expecter {
 }
 
 // Backend provides a mock function for the type MockStoreLoader
-func (_mock *MockStoreLoader) Backend(s string) (Store, error) {
-	ret := _mock.Called(s)
+func (_mock *MockStoreLoader) Backend(context1 context.Context, s string) (Store, error) {
+	ret := _mock.Called(context1, s)
 
 	if len(ret) == 0 {
 		panic("no return value specified for Backend")
@@ -45,18 +47,18 @@ func (_mock *MockStoreLoader) Backend(s string) (Store, error) {
 
 	var r0 Store
 	var r1 error
-	if returnFunc, ok := ret.Get(0).(func(string) (Store, error)); ok {
-		return returnFunc(s)
+	if returnFunc, ok := ret.Get(0).(func(context.Context, string) (Store, error)); ok {
+		return returnFunc(context1, s)
 	}
-	if returnFunc, ok := ret.Get(0).(func(string) Store); ok {
-		r0 = returnFunc(s)
+	if returnFunc, ok := ret.Get(0).(func(context.Context, string) Store); ok {
+		r0 = returnFunc(context1, s)
 	} else {
 		if ret.Get(0) != nil {
 			r0 = ret.Get(0).(Store)
 		}
 	}
-	if returnFunc, ok := ret.Get(1).(func(string) error); ok {
-		r1 = returnFunc(s)
+	if returnFunc, ok := ret.Get(1).(func(context.Context, string) error); ok {
+		r1 = returnFunc(context1, s)
 	} else {
 		r1 = ret.Error(1)
 	}
@@ -69,14 +71,15 @@ type MockStoreLoader_Backend_Call struct {
 }
 
 // Backend is a helper method to define mock.On call
+//   - context1
 //   - s
-func (_e *MockStoreLoader_Expecter) Backend(s interface{}) *MockStoreLoader_Backend_Call {
-	return &MockStoreLoader_Backend_Call{Call: _e.mock.On("Backend", s)}
+func (_e *MockStoreLoader_Expecter) Backend(context1 interface{}, s interface{}) *MockStoreLoader_Backend_Call {
+	return &MockStoreLoader_Backend_Call{Call: _e.mock.On("Backend", context1, s)}
 }
 
-func (_c *MockStoreLoader_Backend_Call) Run(run func(s string)) *MockStoreLoader_Backend_Call {
+func (_c *MockStoreLoader_Backend_Call) Run(run func(context1 context.Context, s string)) *MockStoreLoader_Backend_Call {
 	_c.Call.Run(func(args mock.Arguments) {
-		run(args[0].(string))
+		run(args[0].(context.Context), args[1].(string))
 	})
 	return _c
 }
@@ -86,7 +89,7 @@ func (_c *MockStoreLoader_Backend_Call) Return(store Store, err error) *MockStor
 	return _c
 }
 
-func (_c *MockStoreLoader_Backend_Call) RunAndReturn(run func(s string) (Store, error)) *MockStoreLoader_Backend_Call {
+func (_c *MockStoreLoader_Backend_Call) RunAndReturn(run func(context1 context.Context, s string) (Store, error)) *MockStoreLoader_Backend_Call {
 	_c.Call.Return(run)
 	return _c
 }

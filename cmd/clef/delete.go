@@ -19,7 +19,7 @@ func (g *Delete) Run(ctx context.Context, ktx *kong.Context, conf *config.Config
 		return fmt.Errorf("unexpected nil config")
 	}
 
-	store, err := conf.Backend(g.Store)
+	store, err := conf.Backend(ctx, g.Store)
 	if err != nil {
 		return fmt.Errorf("load store: %w", err)
 	}

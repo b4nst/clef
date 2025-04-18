@@ -18,7 +18,7 @@ type FileStoreBuilder struct {
 	Path string `toml:"path"`
 }
 
-func (fsb *FileStoreBuilder) Build(name string) (Store, error) {
+func (fsb *FileStoreBuilder) Build(_ context.Context, name string) (Store, error) {
 	if fsb.Path == "" {
 		xdgp, err := xdg.DataFile(path.Join("clef", "stores", name))
 		if err != nil {
