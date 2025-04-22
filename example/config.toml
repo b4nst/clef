@@ -12,6 +12,11 @@ type = "osstore"
 [stores.os.config]
 namespace = "prod"
 
+# [stores.gcp]
+# type = "gcp"
+# [stores.gcp.config]
+# project-id = "gcp-production"
+
 [profiles.default]
 shell = "nu"
 # [[profiles.default.secrets]]

@@ -70,6 +70,10 @@ type = "osstore"
 [stores.os.config]
 namespace = "prod"
 
+[stores.gcp]
+type = "gcp"
+[stores.gcp.config]
+project-id = "project-x"
 
 [profiles.robot]
 shell = "nu"
@@ -85,6 +89,7 @@ clef currently supports two built-in secret stores:
 
 - `filestore` – A simple file-based store (local, for dev purpose only)
 - `osstore` – Uses the system's native keyring (macOS, Linux via Secret Service)
+- `gcp` - Uses Google Cloud Platform [Secret Manager](https://cloud.google.com/security/products/secret-manager).
 
 Other stores may be added in the future, as long as they meet the bar for safety and maintainability.
 
