@@ -6,7 +6,7 @@ require (
 	cloud.google.com/go/secretmanager v1.14.7
 	github.com/BurntSushi/toml v1.5.0
 	github.com/adrg/xdg v0.5.3
-	github.com/alecthomas/kong v1.10.0
+	github.com/alecthomas/kong v1.11.0
 	github.com/googleapis/gax-go/v2 v2.14.1
 	github.com/stretchr/testify v1.10.0
 	github.com/zalando/go-keyring v0.2.6
