@@ -17,6 +17,13 @@ namespace = "prod"
 # [stores.gcp.config]
 # project-id = "gcp-production"
 
+# [stores.aws]
+# type = "aws"
+# [stores.aws.config]
+# region = "us-east-1"
+# # Optional AWS profile to use (supports SSO profiles)
+# profile = "my-sso-profile"
+
 [profiles.default]
 shell = "nu"
 # [[profiles.default.secrets]]
