@@ -75,6 +75,12 @@ type = "gcp"
 [stores.gcp.config]
 project-id = "project-x"
 
+[stores.aws]
+type = "aws"
+[stores.aws.config]
+region = "us-east-1"
+profile = "my-sso-profile"
+
 [profiles.robot]
 shell = "nu"
 [[profiles.robot.secrets]]
@@ -85,11 +91,12 @@ target = "SUPER_SECRET"
 
 ## Supported Stores
 
-clef currently supports two built-in secret stores:
+clef currently supports these built-in secret stores:
 
 - `filestore` – A simple file-based store (local, for dev purpose only)
 - `osstore` – Uses the system's native keyring (macOS, Linux via Secret Service)
-- `gcp` - Uses Google Cloud Platform [Secret Manager](https://cloud.google.com/security/products/secret-manager).
+- `gcp` - Uses Google Cloud Platform [Secret Manager](https://cloud.google.com/security/products/secret-manager)
+- `aws` - Uses AWS [Secrets Manager](https://aws.amazon.com/secrets-manager/) with AWS SSO support
 
 Other stores may be added in the future, as long as they meet the bar for safety and maintainability.
 
