@@ -13,7 +13,7 @@ require (
 	github.com/googleapis/gax-go/v2 v2.14.2
 	github.com/stretchr/testify v1.10.0
 	github.com/zalando/go-keyring v0.2.6
-	google.golang.org/grpc v1.72.2
+	google.golang.org/grpc v1.73.0
 )
 
 require (
