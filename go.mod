@@ -3,7 +3,7 @@ module github.com/b4nst/clef
 go 1.24.0
 
 require (
-	cloud.google.com/go/secretmanager v1.15.1
+	cloud.google.com/go/secretmanager v1.16.0
 	github.com/BurntSushi/toml v1.5.0
 	github.com/adrg/xdg v0.5.3
 	github.com/alecthomas/kong v1.12.1
