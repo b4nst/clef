@@ -32,6 +32,7 @@ func (g *Config) Run(ktx *kong.Context, cli *CLI) error {
 	if err != nil {
 		return fmt.Errorf("create temp file: %w", err)
 	}
+	defer os.Remove(tmpf.Name())
 	defer tmpf.Close()
 	if _, err := tmpf.Write(content); err != nil {
 		return fmt.Errorf("prepare temp file: %w", err)
@@ -67,7 +68,7 @@ func (g *Config) Run(ktx *kong.Context, cli *CLI) error {
 	}
 
 	// Write the new config
-	if err := os.WriteFile(cli.ConfigFile, new, 0660); err != nil {
+	if err := os.WriteFile(cli.ConfigFile, new, 0600); err != nil {
 		return fmt.Errorf("saving new config: %w", err)
 	}
 	fmt.Printf("Config written to '%s'\n", cli.ConfigFile)

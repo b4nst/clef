@@ -25,7 +25,6 @@ func (fsb *FileStoreBuilder) Build(_ context.Context, name string) (Store, error
 			return nil, fmt.Errorf("could not load file for %s: %w", name, err)
 		}
 		fsb.Path = xdgp
-		fmt.Println("FILE IS IN", fsb.Path)
 	}
 	return NewFileStore(fsb.Path)
 }
@@ -40,7 +39,7 @@ type FileStore struct {
 // NewFileStore creates a new FileStore baked by the file at filename.
 // It will create the file if it doesn't exist.
 func NewFileStore(filename string) (*FileStore, error) {
-	fd, err := os.OpenFile(filename, os.O_RDWR|os.O_CREATE, 0644)
+	fd, err := os.OpenFile(filename, os.O_RDWR|os.O_CREATE, 0600)
 	if err != nil {
 		return nil, err
 	}
