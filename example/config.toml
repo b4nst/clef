@@ -29,9 +29,8 @@ namespace = "prod"
 # [stores.scaleway.config]
 # region = "fr-par"
 # project-id = "your-project-id"
-# # Optional: credentials (falls back to SCW_ACCESS_KEY/SCW_SECRET_KEY env vars or ~/.config/scw/config.yaml)
-# access-key = "SCWXXXXXXXXXX"
-# secret-key = "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+# # Credentials are loaded from SCW_ACCESS_KEY/SCW_SECRET_KEY env vars
+# # or ~/.config/scw/config.yaml. Avoid putting them in this file.
 
 [profiles.default]
 shell = "nu"

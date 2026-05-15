@@ -176,7 +176,6 @@ func (s *ScalewayStore) findSecretIDByName(name string) (string, error) {
 }
 
 func isScalewayNotFound(err error) bool {
-	notFoundErr, ok := err.(*scw.ResourceNotFoundError)
-	_ = notFoundErr
+	_, ok := err.(*scw.ResourceNotFoundError)
 	return ok
 }

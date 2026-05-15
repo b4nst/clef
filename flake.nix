@@ -27,7 +27,7 @@
           devShells.default = mkShell {
             name = "b4nst/clef";
             buildInputs = [
-              go_1_23
+              go_1_25
               golangci-lint
               gopls
               goreleaser
