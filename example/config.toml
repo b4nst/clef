@@ -24,6 +24,15 @@ namespace = "prod"
 # # Optional AWS profile to use (supports SSO profiles)
 # profile = "my-sso-profile"
 
+# [stores.scaleway]
+# type = "scaleway"
+# [stores.scaleway.config]
+# region = "fr-par"
+# project-id = "your-project-id"
+# # Optional: credentials (falls back to SCW_ACCESS_KEY/SCW_SECRET_KEY env vars or ~/.config/scw/config.yaml)
+# access-key = "SCWXXXXXXXXXX"
+# secret-key = "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+
 [profiles.default]
 shell = "nu"
 # [[profiles.default.secrets]]
